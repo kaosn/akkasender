@@ -1,7 +1,7 @@
 package com.kaosn.akkasender;
 
 /**
- * @author kamil.osinski
+ * @author Kamil Osinski
  */
 public class StartApplication {
 

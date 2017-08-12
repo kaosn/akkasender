@@ -1,7 +1,7 @@
 package com.kaosn.akkasender.enums;
 
 /**
- * @author kamil.osinski
+ * @author Kamil Osinski
  */
 public enum ApplicationContextTypes {
   SENDING_DELAY,

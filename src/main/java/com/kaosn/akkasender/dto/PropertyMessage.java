@@ -3,22 +3,26 @@ package com.kaosn.akkasender.dto;
 import lombok.Getter;
 
 /**
- * @author kamil.osinski
+ * @author Kamil Osinski
  */
+
 public class PropertyMessage<T> {
   @Getter
   private final T propertyValue;
   @Getter
   private final PropertyMessage.Type type;
 
-  public PropertyMessage() {
-    this.type = Type.GETTER;
-    this.propertyValue = null;
+  public static <T> PropertyMessage<T> getter() {
+    return new PropertyMessage<T>(null, Type.GETTER);
   }
 
-  public PropertyMessage(T message) {
+  public static <T> PropertyMessage<T> setter(T value) {
+    return new PropertyMessage<>(value, Type.SETTER);
+  }
+
+  private PropertyMessage(T value, Type type) {
     this.type = Type.SETTER;
-    this.propertyValue = message;
+    this.propertyValue = value;
   }
 
   public enum Type {

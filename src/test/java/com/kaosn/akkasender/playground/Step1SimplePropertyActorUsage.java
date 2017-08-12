@@ -25,9 +25,9 @@ public class Step1SimplePropertyActorUsage {
         PropertyActor.props(100),
         PROPERY_ACTOR_NAME);
 
-    sendingDelayActor.tell(new PropertyMessage<Integer>(200), ActorRef.noSender());
+    sendingDelayActor.tell(PropertyMessage.setter(200), ActorRef.noSender());
 
-    ask(sendingDelayActor, new PropertyMessage<Integer>(), SECOND_IN_MILS)
+    ask(sendingDelayActor, PropertyMessage.getter(), SECOND_IN_MILS)
         .toCompletableFuture()
         .thenAccept(System.out::println);
   }

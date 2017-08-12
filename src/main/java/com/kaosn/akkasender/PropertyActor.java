@@ -7,7 +7,7 @@ import akka.event.LoggingAdapter;
 import com.kaosn.akkasender.dto.PropertyMessage;
 
 /**
- * @author kamil.osinski
+ * @author Kamil Osinski
  */
 public class PropertyActor<T> extends AbstractActor {
 
