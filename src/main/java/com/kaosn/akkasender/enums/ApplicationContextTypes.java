@@ -3,5 +3,7 @@ package com.kaosn.akkasender.enums;
 /**
  * @author kamil.osinski
  */
-public class ApplicationContextTypes {
+public enum ApplicationContextTypes {
+  SENDING_DELAY,
+  MESSAGE_SENDERS_COUNT;
 }

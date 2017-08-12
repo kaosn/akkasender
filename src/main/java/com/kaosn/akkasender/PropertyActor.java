@@ -1,30 +1,28 @@
 package com.kaosn.akkasender;
 
 import akka.actor.AbstractActor;
-import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.kaosn.akkasender.dto.ApplicationContext;
 import com.kaosn.akkasender.dto.PropertyMessage;
-import com.kaosn.akkasender.enums.ApplicationContextTypes;
 
 /**
  * @author kamil.osinski
  */
-public class ApplicationContextActor extends AbstractActor {
+public class PropertyActor<T> extends AbstractActor {
 
   private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-  private ApplicationContext applicationContext;
+  private T property;
 
 
-  public static Props props() {
-    return Props.create(ApplicationContextActor.class);
+  public static <T> Props props(T initialValue) {
+    return Props.create(PropertyActor.class, initialValue);
   }
 
-  public ApplicationContextActor(ApplicationContext applicationContext) {
-    this.applicationContext = applicationContext;
+  public PropertyActor(T initialValue) {
+    this.property = initialValue;
   }
 
   @Override
@@ -34,27 +32,12 @@ public class ApplicationContextActor extends AbstractActor {
         .build();
   }
 
-  private void resolveApplicationContext(PropertyMessage propertyMessage) {
-    if (propertyMessage.getType().equals(PropertyMessage.Type.GETTER)) {
-
+  private void resolveApplicationContext(PropertyMessage<T> propertyMessage) {
+    if (PropertyMessage.Type.GETTER.equals(propertyMessage.getType())) {
+      getSender().tell(this.property, getSelf());
+    } else {
+      this.property = propertyMessage.getMessage();
     }
 
-  }
-
-  private void resolveGetterForApplicationContextData(ApplicationContextTypes.Getter applicationContextType) {
-    switch (applicationContextType) {
-      case SENDING_DELAY:
-        return this.applicationContext.getSendingDelay();
-        return this.applicationContext.get
-    }
-  }
-
-  private void resolveSetterForApplicationContextData(ApplicationContextTypes.Getter applicationContextType) {
-    switch (applicationContextType) {
-      case SENDING_DELAY:
-        applicationContext.setSendingDelay(this.applicationContext.getSendingDelay());
-        return;
-      case
-    }
   }
 }
