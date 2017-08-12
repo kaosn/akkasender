@@ -4,7 +4,6 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.kaosn.akkasender.dto.ApplicationContext;
 import com.kaosn.akkasender.dto.PropertyMessage;
 
 /**
@@ -12,17 +11,16 @@ import com.kaosn.akkasender.dto.PropertyMessage;
  */
 public class PropertyActor<T> extends AbstractActor {
 
-  private LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
+  private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
 
-  private T property;
-
+  private T value;
 
   public static <T> Props props(T initialValue) {
     return Props.create(PropertyActor.class, initialValue);
   }
 
   public PropertyActor(T initialValue) {
-    this.property = initialValue;
+    this.value = initialValue;
   }
 
   @Override
@@ -33,11 +31,16 @@ public class PropertyActor<T> extends AbstractActor {
   }
 
   private void resolveApplicationContext(PropertyMessage<T> propertyMessage) {
-    if (PropertyMessage.Type.GETTER.equals(propertyMessage.getType())) {
-      getSender().tell(this.property, getSelf());
-    } else {
-      this.property = propertyMessage.getMessage();
-    }
 
+    if (PropertyMessage.Type.GETTER.equals(propertyMessage.getType())) {
+      log.debug("Received getter for "  + this.getSelf().path().name()
+          + " (v:" + this.value + ")");
+      getSender().tell(this.value, getSelf());
+
+    } else {
+      log.debug("Received setter for "  + this.getSelf().path().name()
+          + " (v:" + this.value + " -> " + propertyMessage.getPropertyValue() + ")");
+      this.value = propertyMessage.getPropertyValue();
+    }
   }
 }

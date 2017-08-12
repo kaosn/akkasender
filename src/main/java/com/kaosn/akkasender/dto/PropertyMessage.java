@@ -1,7 +1,5 @@
 package com.kaosn.akkasender.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 /**
@@ -9,18 +7,18 @@ import lombok.Getter;
  */
 public class PropertyMessage<T> {
   @Getter
-  private final T message;
+  private final T propertyValue;
   @Getter
   private final PropertyMessage.Type type;
 
   public PropertyMessage() {
     this.type = Type.GETTER;
-    this.message = null;
+    this.propertyValue = null;
   }
 
   public PropertyMessage(T message) {
     this.type = Type.SETTER;
-    this.message = message;
+    this.propertyValue = message;
   }
 
   public enum Type {
