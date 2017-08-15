@@ -32,11 +32,10 @@ public class PropertyActor<T> extends AbstractActor {
 
   private void resolveApplicationContext(PropertyMessage<T> propertyMessage) {
 
-    if (PropertyMessage.Type.GETTER.equals(propertyMessage.getType())) {
+    if (propertyMessage.isGetter()) {
       log.debug("Received getter for "  + this.getSelf().path().name()
           + " (v:" + this.value + ")");
       getSender().tell(this.value, getSelf());
-
     } else {
       log.debug("Received setter for "  + this.getSelf().path().name()
           + " (v:" + this.value + " -> " + propertyMessage.getPropertyValue() + ")");

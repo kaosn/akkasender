@@ -7,8 +7,10 @@ import lombok.Getter;
  */
 
 public class PropertyMessage<T> {
+
   @Getter
   private final T propertyValue;
+
   @Getter
   private final PropertyMessage.Type type;
 
@@ -21,11 +23,15 @@ public class PropertyMessage<T> {
   }
 
   private PropertyMessage(T value, Type type) {
-    this.type = Type.SETTER;
+    this.type = type;
     this.propertyValue = value;
   }
 
-  public enum Type {
+  public boolean isGetter() {
+    return Type.GETTER.equals(this.type);
+  }
+
+  private enum Type {
     GETTER,
     SETTER
   }
