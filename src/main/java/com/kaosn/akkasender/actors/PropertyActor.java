@@ -1,4 +1,4 @@
-package com.kaosn.akkasender;
+package com.kaosn.akkasender.actors;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;

@@ -1,9 +1,10 @@
-package com.kaosn.akkasender.dto;
+package com.kaosn.akkasender.actors;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.testkit.javadsl.TestKit;
-import com.kaosn.akkasender.PropertyActor;
+import com.kaosn.akkasender.actors.PropertyActor;
+import com.kaosn.akkasender.dto.PropertyMessage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * @author Kamil Osinski
  */
-public class PropertyMessageTest {
+public class PropertyActorTest {
 
   private static ActorSystem system;
 

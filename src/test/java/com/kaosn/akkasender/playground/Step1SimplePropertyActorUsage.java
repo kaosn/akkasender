@@ -2,7 +2,7 @@ package com.kaosn.akkasender.playground;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import com.kaosn.akkasender.PropertyActor;
+import com.kaosn.akkasender.actors.PropertyActor;
 import com.kaosn.akkasender.dto.PropertyMessage;
 import org.junit.Test;
 
