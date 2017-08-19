@@ -10,6 +10,13 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @author Kamil Osinski
+ * To run rabbitmq with docker:
+ * docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 -p 5672:5672 rabbitmq:3-management
+ * docker start some-rabbit
+ * docker inspect some-rabbit
+ * docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' some-rabbit
+ * docker-machine ip - get my ip
+ *
  */
 public class ConnectionFactory {
   public Connection createConnection() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, TimeoutException {

@@ -1,20 +1,12 @@
-package com.kaosn.akkasender;
+package com.kaosn.akkasender.playground;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import com.kaosn.akkasender.actors.ApplicationPropertiesActor;
 import com.kaosn.akkasender.actors.RabbitMQConnectionActor;
 import com.kaosn.akkasender.actors.RabbitMQDirectPublisherActor;
-import com.kaosn.akkasender.connection.ConnectionFactory;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.typesafe.config.ConfigFactory;
+import org.junit.Test;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.IntStream;
 
 import static akka.pattern.PatternsCS.ask;
@@ -22,10 +14,9 @@ import static akka.pattern.PatternsCS.ask;
 /**
  * @author Kamil Osinski
  */
-public class StartApplication {
-
-
-  public static void main(final String[] args) throws IOException {
+public class Step2RabbitMQSending {
+  @Test
+  public void fullFlowOfSendingWithTwoPublishers() {
     try {
 
       final ActorSystem actorSystem = ActorSystem.create();
@@ -51,12 +42,10 @@ public class StartApplication {
           "publisher2"
       );
 
-      IntStream.range(0, 10).forEach( x -> {
+      IntStream.range(0, 10).forEach(x -> {
         publisher.tell("Message pub 1 [" + x, ActorRef.noSender());
         publisher2.tell("Message pub 2 [" + x, ActorRef.noSender());
       });
-
-      System.in.read();
     } catch (Exception e) {
       e.printStackTrace();
     }
