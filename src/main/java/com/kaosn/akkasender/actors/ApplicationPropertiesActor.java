@@ -13,16 +13,21 @@ public class ApplicationPropertiesActor extends AbstractActor {
 
   public static final String DEFAULT_NAME = "applicationPropertiesActor";
 
-  private final Config config;
+  private Config config;
+  private final String propertyPath;
 
   public static Props props(String propertyPath) {
     return Props.create(ApplicationPropertiesActor.class, propertyPath);
   }
 
   public ApplicationPropertiesActor(final String propertyPath) {
-    config = ConfigFactory.load(propertyPath);
+    this.propertyPath = propertyPath;
   }
 
+  @Override
+  public void preStart() {
+    config = ConfigFactory.load(propertyPath);
+  }
 
   @Override
   public Receive createReceive() {

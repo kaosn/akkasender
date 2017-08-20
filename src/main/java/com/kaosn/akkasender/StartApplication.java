@@ -2,19 +2,13 @@ package com.kaosn.akkasender;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
 import com.kaosn.akkasender.actors.ApplicationPropertiesActor;
 import com.kaosn.akkasender.actors.RabbitMQConnectionActor;
 import com.kaosn.akkasender.actors.RabbitMQDirectPublisherActor;
-import com.kaosn.akkasender.connection.ConnectionFactory;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.typesafe.config.ConfigFactory;
+import com.kaosn.akkasender.dto.RabbitMQPublisherContext;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.IntStream;
 
 import static akka.pattern.PatternsCS.ask;
@@ -23,8 +17,6 @@ import static akka.pattern.PatternsCS.ask;
  * @author Kamil Osinski
  */
 public class StartApplication {
-
-
   public static void main(final String[] args) throws IOException {
     try {
 
@@ -41,24 +33,26 @@ public class StartApplication {
           RabbitMQConnectionActor.DEFAULT_NAME
       );
 
-      final ActorRef publisher = actorSystem.actorOf(
-          RabbitMQDirectPublisherActor.props("exch", "queue1", "black", rabbitConnectionFactory),
-          "publisher1"
-      );
+      final ActorRef publisher1 = actorSystem.actorOf(getPublisherProps("messageKey1", rabbitConnectionFactory));
 
-      final ActorRef publisher2 = actorSystem.actorOf(
-          RabbitMQDirectPublisherActor.props("exch", "queue1", "orange", rabbitConnectionFactory),
-          "publisher2"
-      );
+      final ActorRef publisher2 = actorSystem.actorOf(getPublisherProps("messageKey2", rabbitConnectionFactory));
 
       IntStream.range(0, 10).forEach( x -> {
-        publisher.tell("Message pub 1 [" + x, ActorRef.noSender());
+        publisher1.tell("Message pub 1 [" + x, ActorRef.noSender());
         publisher2.tell("Message pub 2 [" + x, ActorRef.noSender());
       });
-
-      System.in.read();
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  private static Props getPublisherProps(final String routingKey, final ActorRef connectionActor) {
+    final RabbitMQPublisherContext pubContext2 = new RabbitMQPublisherContext(
+        "exchange",
+        "testQueue",
+        routingKey,
+        connectionActor);
+
+    return RabbitMQDirectPublisherActor.props(pubContext2);
   }
 }
