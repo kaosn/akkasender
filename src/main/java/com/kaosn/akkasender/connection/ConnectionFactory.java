@@ -18,6 +18,7 @@ import java.util.concurrent.TimeoutException;
  * docker-machine ip - get my ip
  *
  */
+@Deprecated
 public class ConnectionFactory {
   public Connection createConnection() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, TimeoutException {
     final com.rabbitmq.client.ConnectionFactory factory = new com.rabbitmq.client.ConnectionFactory();
